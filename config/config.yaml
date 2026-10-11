@@ -1,0 +1,78 @@
+# Baseline for Part 1.  Experiments below override only changed fields.
+dataset:
+  name: CIFAR10
+  root: data/dataset
+  download: true
+  val_fraction: 0.1
+
+model:
+  image_size: 32
+  patch_size: 4
+  in_channels: 3
+  num_classes: 10
+  embed_dim: 128
+  depth: 4
+  num_heads: 8
+  mlp_dim: 128
+  dropout: 0.1
+  attention_dropout: 0.1
+  qkv_bias: true
+
+training:
+  seed: 42
+  device: auto
+  epochs: 50
+  batch_size: 128
+  num_workers: 2
+  optimizer: adamw
+  learning_rate: 0.0005
+  min_lr: 0.000001
+  weight_decay: 0.05
+  label_smoothing: 0.1
+  grad_clip: 1.0
+  amp: true
+  augment: true
+  randaugment: true
+
+outputs:
+  checkpoint_dir: models/saved_models
+  log_dir: outputs/logs
+  plot_dir: outputs/plots
+  attention_dir: outputs/attention_maps
+
+# Part 2a: each experiment is baseline + these overrides.
+experiments:
+  embed_dim_64:
+    model:
+      embed_dim: 64
+      mlp_dim: 128
+      num_heads: 8
+
+  embed_dim_256:
+    model:
+      embed_dim: 256
+      mlp_dim: 128
+      num_heads: 8
+
+  depth_2:
+    model:
+      depth: 2
+
+  depth_8:
+    model:
+      depth: 8
+
+  patch_2:
+    model:
+      patch_size: 2
+
+  patch_8:
+    model:
+      patch_size: 8
+
+  image_size_64:
+    model:
+      image_size: 64
+      patch_size: 4
+    training:
+      batch_size: 96
